@@ -12,6 +12,7 @@ import { FormatDataRowPreview } from './FormatDataRowPreview';
 import { FormatErrorMessage } from './FormatErrorMessage';
 
 import './FormatPreview.scss';
+import { useLocale } from '../locale/LocaleContext';
 
 export const FormatPreview: React.FC<{
   customConfig: CustomizablePapaParseConfig;
@@ -83,6 +84,14 @@ export const FormatPreview: React.FC<{
     };
   }, [file]);
 
+  const {
+    importErrorText,
+    rawFileContentsText,
+    previewImportText,
+    hasHeadersText,
+    loadingPreviewText
+  } = useLocale('FormatPreview');
+
   // preview result content to display
   const reportBlock = useMemo(() => {
     if (!preview) {
@@ -93,7 +102,7 @@ export const FormatPreview: React.FC<{
       return (
         <div className="CSVImporter_FormatPreview__mainResultBlock">
           <FormatErrorMessage onCancelClick={onCancel}>
-            Import error:{' '}
+            {importErrorText}{' '}
             <b>{preview.parseError.message || String(preview.parseError)}</b>
           </FormatErrorMessage>
         </div>
@@ -103,7 +112,7 @@ export const FormatPreview: React.FC<{
     return (
       <div className="CSVImporter_FormatPreview__mainResultBlock">
         <div className="CSVImporter_FormatPreview__header">
-          Raw File Contents
+          {rawFileContentsText}
         </div>
 
         <FormatRawPreview
@@ -115,7 +124,7 @@ export const FormatPreview: React.FC<{
         {preview.parseWarning ? null : (
           <>
             <div className="CSVImporter_FormatPreview__header">
-              Preview Import
+              {previewImportText}
               {!preview.isSingleLine && ( // hide setting if only one line anyway
                 <label className="CSVImporter_FormatPreview__headerToggle">
                   <input
@@ -132,7 +141,7 @@ export const FormatPreview: React.FC<{
                       );
                     }}
                   />
-                  <span>Data has headers</span>
+                  <span>{hasHeadersText}</span>
                 </label>
               )}
             </div>
@@ -144,7 +153,14 @@ export const FormatPreview: React.FC<{
         )}
       </div>
     );
-  }, [preview, onCancel]);
+  }, [
+    preview,
+    rawFileContentsText,
+    onCancel,
+    previewImportText,
+    hasHeadersText,
+    importErrorText
+  ]);
 
   return (
     <ImporterFrame
@@ -161,7 +177,7 @@ export const FormatPreview: React.FC<{
     >
       {reportBlock || (
         <div className="CSVImporter_FormatPreview__mainPendingBlock">
-          Loading preview...
+          {loadingPreviewText}
         </div>
       )}
     </ImporterFrame>

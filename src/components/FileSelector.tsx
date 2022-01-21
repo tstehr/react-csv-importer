@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useLocale } from '../locale/LocaleContext';
 
 import './FileSelector.scss';
 
@@ -23,6 +24,10 @@ export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
     onDrop: dropHandler
   });
 
+  const { defaultText: defaultText, dragActiveText } = useLocale(
+    'FileSelector'
+  );
+
   return (
     <div
       className="CSVImporter_FileSelector"
@@ -32,9 +37,9 @@ export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
       <input {...getInputProps()} />
 
       {isDragActive ? (
-        <span>Drop CSV file here...</span>
+        <span>{dragActiveText}</span>
       ) : (
-        <span>Drag-and-drop CSV file here, or click to select in folder</span>
+        <span>{defaultText}</span>
       )}
     </div>
   );
