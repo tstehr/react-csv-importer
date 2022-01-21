@@ -20,6 +20,8 @@ import {
 } from './ImporterProps';
 
 import './Importer.scss';
+import { enUS, ImporterLocale } from '../locale';
+import { LocaleContext } from '../locale/LocaleContext';
 
 // internal context for registering field definitions
 type FieldDef = Field & { id: number };
@@ -87,7 +89,8 @@ const ContentWrapper: React.FC<{
   preview: Preview | null;
   externalPreview: ImporterFilePreview | null;
   content: ImporterContentRenderProp | React.ReactNode;
-}> = ({ setFields, preview, externalPreview, content, children }) => {
+  locale?: ImporterLocale;
+}> = ({ setFields, preview, externalPreview, content, children, locale }) => {
   const finalContent = useMemo(() => {
     return typeof content === 'function'
       ? content({
@@ -98,13 +101,15 @@ const ContentWrapper: React.FC<{
   }, [preview, externalPreview, content]);
 
   return (
-    <div className="CSVImporter_Importer">
-      {children}
+    <LocaleContext.Provider value={locale ?? enUS}>
+      <div className="CSVImporter_Importer">
+        {children}
 
-      <FieldDefinitionContext.Provider value={setFields}>
-        {finalContent}
-      </FieldDefinitionContext.Provider>
-    </div>
+        <FieldDefinitionContext.Provider value={setFields}>
+          {finalContent}
+        </FieldDefinitionContext.Provider>
+      </div>
+    </LocaleContext.Provider>
   );
 };
 
@@ -116,6 +121,7 @@ export function Importer<Row extends BaseRow>({
   onComplete,
   onClose,
   children: content,
+  locale,
   ...customPapaParseConfig
 }: React.PropsWithChildren<ImporterProps<Row>>): React.ReactElement {
   // helper to combine our displayed content and the user code that provides field definitions
@@ -157,6 +163,7 @@ export function Importer<Row extends BaseRow>({
         preview={preview}
         externalPreview={externalPreview}
         content={content}
+        locale={locale}
       >
         <FileSelector onSelected={fileHandler} />
       </ContentWrapper>
@@ -170,6 +177,7 @@ export function Importer<Row extends BaseRow>({
         preview={preview}
         externalPreview={externalPreview}
         content={content}
+        locale={locale}
       >
         <FormatPreview
           customConfig={customPapaParseConfig}
@@ -198,6 +206,7 @@ export function Importer<Row extends BaseRow>({
         preview={preview}
         externalPreview={externalPreview}
         content={content}
+        locale={locale}
       >
         <ColumnPicker
           fields={fields}
@@ -220,6 +229,7 @@ export function Importer<Row extends BaseRow>({
       preview={preview}
       externalPreview={externalPreview}
       content={content}
+      locale={locale}
     >
       <ProgressDisplay
         preview={preview}
