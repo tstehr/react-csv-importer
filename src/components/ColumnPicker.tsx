@@ -101,12 +101,15 @@ export const ColumnPicker: React.FC<{
     });
   });
 
-  const { requiredFieldsErrorText, subtitleText } = useLocale('ColumnPicker');
+  const { requiredFieldsErrorText, subtitleText, nextStepText } = useLocale(
+    'ColumnPicker'
+  );
 
   return (
     <ImporterFrame
       fileName={preview.file.name}
       subtitle={subtitleText}
+      nextLabel={nextStepText}
       error={validationError}
       onCancel={onCancel}
       onNext={() => {

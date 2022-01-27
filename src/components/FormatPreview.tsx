@@ -89,7 +89,8 @@ export const FormatPreview: React.FC<{
     rawFileContentsText,
     previewImportText,
     hasHeadersText,
-    loadingPreviewText
+    loadingPreviewText,
+    nextStepText
   } = useLocale('FormatPreview');
 
   // preview result content to display
@@ -165,6 +166,7 @@ export const FormatPreview: React.FC<{
   return (
     <ImporterFrame
       fileName={file.name}
+      nextLabel={nextStepText}
       nextDisabled={!preview || !!preview.parseError || !!preview.parseWarning}
       onNext={() => {
         if (!preview || preview.parseError) {

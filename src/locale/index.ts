@@ -19,6 +19,7 @@ export interface ImporterLocale {
     ColumnPicker: {
       requiredFieldsErrorText: string;
       subtitleText: string;
+      nextStepText?: string;
     };
     FileSelector: {
       defaultText: string;
@@ -33,6 +34,7 @@ export interface ImporterLocale {
       previewImportText: string;
       hasHeadersText: string;
       loadingPreviewText: string;
+      nextStepText?: string;
     };
     FormatRawPreview: {
       getWarningText: (warningMessage: string) => string;
